@@ -1,0 +1,46 @@
+version: "3"
+services:
+  httpd_pv:
+    privileged: true
+    build: "."
+    image: pos_venta_img
+    container_name: pos_venta_web
+    ports:
+      - "8585:80"
+    tty: true
+    volumes:
+      - ./web:/var/www/pos_venta
+    links:
+      - mysql_pv
+  mysql_pv:
+    image: mariadb
+    container_name: pos_venta_db
+    tty: true
+    ports:
+      - "33065:3306"
+    environment:
+      - MYSQL_USER=fbrujan
+      - MYSQL_PASSWORD=Ilcjfjnj2m
+      - MYSQL_ROOT_PASSWORD=Ilcjfjnj2m
+      - MYSQL_DATABASE=default_schem
+    volumes:
+      - ./bd:/var/lib/mysql
+  phpmyadmin_pv:
+    image: phpmyadmin
+    container_name: pos_venta_pma
+    links:
+      - mysql_pv
+    environment:
+      PMA_HOST: pos_venta_db
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: Ilcjfjnj2m
+      PMA_ARBITRARY: 1
+    depends_on:
+      - mysql_pv
+    ports:
+      - 8185:80
+networks:
+  default:
+    name: pos_venta
+    external: true
+

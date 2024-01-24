@@ -1,0 +1,7 @@
+Downloads/*
+bd/*
+web_bk/*
+_docker_compose.yml
+!.gitignore
+!Downloads/.gitkeep
+!bd/.gitkeep
